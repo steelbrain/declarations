@@ -19,5 +19,19 @@
   "bugs": {
     "url": "https://github.com/steelbrain/intentions-jump-to-declaration/issues"
   },
-  "homepage": "https://github.com/steelbrain/intentions-jump-to-declaration"
+  "homepage": "https://github.com/steelbrain/intentions-jump-to-declaration",
+  "providedServices": {
+    "intentions:highlight": {
+      "versions": {
+        "1.0.0": "provideIntentions"
+      }
+    }
+  },
+  "consumedServices": {
+    "intentions-jump-to-declaration": {
+      "versions": {
+        "^1.0.0": "consumeProvider"
+      }
+    }
+  }
 }
