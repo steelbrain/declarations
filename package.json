@@ -1,25 +1,26 @@
 {
-  "name": "intentions-jump-to-declaration",
+  "name": "declarations",
   "version": "0.0.0",
-  "description": "A base package that lets other packages allow user to jump to declaration",
+  "description": "A base package that lets other packages provide declaration highlights",
   "main": "lib/index.js",
   "scripts": {
     "test": "apm test"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/steelbrain/intentions-jump-to-declaration"
+    "url": "https://github.com/steelbrain/declarations"
   },
   "keywords": [
     "intentions",
-    "jump-to-declaration"
+    "jump-to-declaration",
+    "declarations"
   ],
   "author": "steelbrain",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/steelbrain/intentions-jump-to-declaration/issues"
+    "url": "https://github.com/steelbrain/declarations/issues"
   },
-  "homepage": "https://github.com/steelbrain/intentions-jump-to-declaration",
+  "homepage": "https://github.com/steelbrain/declarations",
   "providedServices": {
     "intentions:highlight": {
       "versions": {
@@ -28,7 +29,7 @@
     }
   },
   "consumedServices": {
-    "intentions-jump-to-declaration": {
+    "declarations": {
       "versions": {
         "^1.0.0": "consumeProvider"
       }
