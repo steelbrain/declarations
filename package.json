@@ -1,0 +1,23 @@
+{
+  "name": "intentions-jump-to-declaration",
+  "version": "0.0.0",
+  "description": "A base package that lets other packages allow user to jump to declaration",
+  "main": "lib/index.js",
+  "scripts": {
+    "test": "apm test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/steelbrain/intentions-jump-to-declaration"
+  },
+  "keywords": [
+    "intentions",
+    "jump-to-declaration"
+  ],
+  "author": "steelbrain",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/steelbrain/intentions-jump-to-declaration/issues"
+  },
+  "homepage": "https://github.com/steelbrain/intentions-jump-to-declaration"
+}
