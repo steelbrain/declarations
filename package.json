@@ -26,6 +26,11 @@
       "versions": {
         "1.0.0": "provideIntentionsHighlight"
       }
+    },
+    "intentions:list": {
+      "versions": {
+        "1.0.0": "provideIntentionsList"
+      }
     }
   },
   "consumedServices": {
