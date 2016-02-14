@@ -2,7 +2,7 @@
 
 import {ProvidersRegistry} from '../lib/providers-registry'
 
-fdescribe('ProvidersRegistry', function() {
+describe('ProvidersRegistry', function() {
   let editor
   let providerParams
   let providersRegistry
