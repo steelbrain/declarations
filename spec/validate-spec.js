@@ -151,4 +151,73 @@ describe('Validate', function() {
     })
   })
 
+  describe('validateProvider', function() {
+    it('works with valid providers', function() {
+      expect(function() {
+        validateProvider({
+          grammarScopes: ['*'],
+          getDeclarations() {}
+        })
+      }).not.toThrow()
+    })
+    it('cries if grammarScopes is invalid', function() {
+      expect(function() {
+        validateProvider({
+          grammarScopes: null,
+          getDeclarations() {}
+        })
+      }).toThrow()
+      expect(function() {
+        validateProvider({
+          grammarScopes: true,
+          getDeclarations() {}
+        })
+      }).toThrow()
+      expect(function() {
+        validateProvider({
+          grammarScopes: 'asd',
+          getDeclarations() {}
+        })
+      }).toThrow()
+      expect(function() {
+        validateProvider({
+          grammarScopes: {},
+          getDeclarations() {}
+        })
+      }).toThrow()
+    })
+    it('cries if getDeclarations is invalid', function() {
+      expect(function() {
+        validateProvider({
+          grammarScopes: ['*'],
+          getDeclarations: true
+        })
+      }).toThrow()
+      expect(function() {
+        validateProvider({
+          grammarScopes: ['*'],
+          getDeclarations: false
+        })
+      }).toThrow()
+      expect(function() {
+        validateProvider({
+          grammarScopes: ['*'],
+          getDeclarations: null
+        })
+      }).toThrow()
+      expect(function() {
+        validateProvider({
+          grammarScopes: ['*'],
+          getDeclarations: 'asd'
+        })
+      }).toThrow()
+      expect(function() {
+        validateProvider({
+          grammarScopes: ['*'],
+          getDeclarations: {}
+        })
+      }).toThrow()
+    })
+  })
+
 })
