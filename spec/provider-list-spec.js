@@ -32,9 +32,9 @@ describe('ProviderList', function() {
           return
         }
         requestIntentionsCalled = true
-        e.promise = Promise.resolve([{
+        e.result = [{
           range: [[1, 1], [1, Infinity]]
-        }])
+        }]
       })
 
       waitsForAsync(async function() {
