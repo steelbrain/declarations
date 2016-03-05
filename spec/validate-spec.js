@@ -149,6 +149,14 @@ describe('Validate', function() {
         }])
       }).toThrow()
     })
+    it('accepts callback in source', function() {
+      expect(function() {
+        validateDeclarations([{
+          range: [[0, 0], [0, 1]],
+          source: function() {}
+        }])
+      }).not.toThrow()
+    })
   })
 
   describe('validateProvider', function() {
