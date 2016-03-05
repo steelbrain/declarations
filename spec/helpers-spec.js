@@ -30,6 +30,21 @@ describe('Helpers', function() {
         })
       })
     })
+
+    it('works with promised sources', function() {
+      const filePath = __filename
+      waitsForPromise(function() {
+        return visitSource({source: function() {
+          return new Promise(function(resolve) {
+            resolve({filePath, position: [0, 1]})
+          })
+        }}).then(function() {
+          const activeEditor = atom.workspace.getActiveTextEditor()
+          expect(activeEditor.getPath()).toBe(filePath)
+          expect(activeEditor.getCursorBufferPosition()).toEqual([0, 1])
+        })
+      })
+    })
   })
 
 })
