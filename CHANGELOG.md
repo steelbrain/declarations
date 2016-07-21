@@ -1,3 +1,7 @@
+## 1.1.1
+
+- Fix a minor typo
+
 ## 1.1.0
 
 - Internal cleanup
