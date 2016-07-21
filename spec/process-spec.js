@@ -3,9 +3,18 @@
 import { processDeclarations, processProvider } from '../lib/process'
 
 describe('Process', function() {
+  afterEach(function() {
+    atom.notifications.clear()
+  })
+
+  function testResultOf(callback: Function) {
+    callback()
+    return expect(atom.notifications.getNotifications().length === 0)
+  }
+
   describe('processDeclarations', function() {
     it('works well with valid ones', function() {
-      expect(function() {
+      testResultOf(function() {
         processDeclarations([{
           range: [[0, 0], [0, 1]],
           source: {
@@ -13,10 +22,10 @@ describe('Process', function() {
             position: [0, 1],
           },
         }])
-      }).not.toThrow()
+      }).toBe(true)
     })
     it('cries if range is invalid', function() {
-      expect(function() {
+      testResultOf(function() {
         processDeclarations([{
           range: false,
           source: {
@@ -24,8 +33,8 @@ describe('Process', function() {
             position: [0, 1],
           },
         }])
-      }).toThrow()
-      expect(function() {
+      }).toBe(false)
+      testResultOf(function() {
         processDeclarations([{
           range: null,
           source: {
@@ -33,8 +42,8 @@ describe('Process', function() {
             position: [0, 1],
           },
         }])
-      }).toThrow()
-      expect(function() {
+      }).toBe(false)
+      testResultOf(function() {
         processDeclarations([{
           range: true,
           source: {
@@ -42,8 +51,8 @@ describe('Process', function() {
             position: [0, 1],
           },
         }])
-      }).toThrow()
-      expect(function() {
+      }).toBe(false)
+      testResultOf(function() {
         processDeclarations([{
           range: 'asd',
           source: {
@@ -51,36 +60,36 @@ describe('Process', function() {
             position: [0, 1],
           },
         }])
-      }).toThrow()
+      }).toBe(false)
     })
     it('cries if source is invalid', function() {
-      expect(function() {
+      testResultOf(function() {
         processDeclarations([{
           range: [[0, 0], [0, 1]],
           source: null,
         }])
-      }).toThrow()
-      expect(function() {
+      }).toBe(false)
+      testResultOf(function() {
         processDeclarations([{
           range: [[0, 0], [0, 1]],
           source: false,
         }])
-      }).toThrow()
-      expect(function() {
+      }).toBe(false)
+      testResultOf(function() {
         processDeclarations([{
           range: [[0, 0], [0, 1]],
           source: true,
         }])
-      }).toThrow()
-      expect(function() {
+      }).toBe(false)
+      testResultOf(function() {
         processDeclarations([{
           range: [[0, 0], [0, 1]],
           source: 'asd',
         }])
-      }).toThrow()
+      }).toBe(false)
     })
     it('cries if source.filePath is invalid', function() {
-      expect(function() {
+      testResultOf(function() {
         processDeclarations([{
           range: [[0, 0], [0, 1]],
           source: {
@@ -88,8 +97,8 @@ describe('Process', function() {
             position: [0, 1],
           },
         }])
-      }).toThrow()
-      expect(function() {
+      }).toBe(false)
+      testResultOf(function() {
         processDeclarations([{
           range: [[0, 0], [0, 1]],
           source: {
@@ -97,8 +106,8 @@ describe('Process', function() {
             position: [0, 1],
           },
         }])
-      }).toThrow()
-      expect(function() {
+      }).toBe(false)
+      testResultOf(function() {
         processDeclarations([{
           range: [[0, 0], [0, 1]],
           source: {
@@ -106,8 +115,8 @@ describe('Process', function() {
             position: [0, 1],
           },
         }])
-      }).toThrow()
-      expect(function() {
+      }).toBe(false)
+      testResultOf(function() {
         processDeclarations([{
           range: [[0, 0], [0, 1]],
           source: {
@@ -115,10 +124,10 @@ describe('Process', function() {
             position: [0, 1],
           },
         }])
-      }).toThrow()
+      }).toBe(false)
     })
     it('ignores if theres no source.position', function() {
-      expect(function() {
+      testResultOf(function() {
         processDeclarations([{
           range: [[0, 0], [0, 1]],
           source: {
@@ -126,10 +135,10 @@ describe('Process', function() {
             position: null,
           },
         }])
-      }).not.toThrow()
+      }).toBe(true)
     })
     it('cries if source.position is provided an invalid', function() {
-      expect(function() {
+      testResultOf(function() {
         processDeclarations([{
           range: [[0, 0], [0, 1]],
           source: {
@@ -137,8 +146,8 @@ describe('Process', function() {
             position: true,
           },
         }])
-      }).toThrow()
-      expect(function() {
+      }).toBe(false)
+      testResultOf(function() {
         processDeclarations([{
           range: [[0, 0], [0, 1]],
           source: {
@@ -146,84 +155,84 @@ describe('Process', function() {
             position: 'asd',
           },
         }])
-      }).toThrow()
+      }).toBe(false)
     })
     it('accepts callback in source', function() {
-      expect(function() {
+      testResultOf(function() {
         processDeclarations([{
           range: [[0, 0], [0, 1]],
           source() {},
         }])
-      }).not.toThrow()
+      }).toBe(true)
     })
   })
 
   describe('validateProvider', function() {
     it('works with valid providers', function() {
-      expect(function() {
+      testResultOf(function() {
         processProvider({
           grammarScopes: ['*'],
           getDeclarations() { },
         })
-      }).not.toThrow()
+      }).toBe(true)
     })
     it('cries if grammarScopes is invalid', function() {
-      expect(function() {
+      testResultOf(function() {
         processProvider({
           grammarScopes: null,
           getDeclarations() {},
         })
-      }).toThrow()
-      expect(function() {
+      }).toBe(false)
+      testResultOf(function() {
         processProvider({
           grammarScopes: true,
           getDeclarations() {},
         })
-      }).toThrow()
-      expect(function() {
+      }).toBe(false)
+      testResultOf(function() {
         processProvider({
           grammarScopes: 'asd',
           getDeclarations() {},
         })
-      }).toThrow()
-      expect(function() {
+      }).toBe(false)
+      testResultOf(function() {
         processProvider({
           grammarScopes: {},
           getDeclarations() {},
         })
-      }).toThrow()
+      }).toBe(false)
     })
     it('cries if getDeclarations is invalid', function() {
-      expect(function() {
+      testResultOf(function() {
         processProvider({
           grammarScopes: ['*'],
           getDeclarations: true,
         })
-      }).toThrow()
-      expect(function() {
+      }).toBe(false)
+      testResultOf(function() {
         processProvider({
           grammarScopes: ['*'],
           getDeclarations: false,
         })
-      }).toThrow()
-      expect(function() {
+      }).toBe(false)
+      testResultOf(function() {
         processProvider({
           grammarScopes: ['*'],
           getDeclarations: null,
         })
-      }).toThrow()
-      expect(function() {
+      }).toBe(false)
+      testResultOf(function() {
         processProvider({
           grammarScopes: ['*'],
           getDeclarations: 'asd',
         })
-      }).toThrow()
-      expect(function() {
+      }).toBe(false)
+      testResultOf(function() {
         processProvider({
           grammarScopes: ['*'],
           getDeclarations: {},
         })
-      }).toThrow()
+      }).toBe(false)
     })
   })
 })

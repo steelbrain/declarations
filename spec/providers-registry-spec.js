@@ -14,7 +14,6 @@ describe('ProvidersRegistry', function() {
     }
     providersRegistry = new ProvidersRegistry()
     atom.packages.activatePackage('language-javascript')
-    atom.workspace.destroyActivePane()
     waitsForPromise(function() {
       return atom.workspace.open(__filename).then(function() {
         editor = atom.workspace.getActiveTextEditor()
@@ -22,16 +21,20 @@ describe('ProvidersRegistry', function() {
       })
     })
   })
+  afterEach(function() {
+    atom.workspace.destroyActivePane()
+    atom.notifications.clear()
+  })
 
-  describe('addProvider & hasProvider', function() {
+  describe('addProvider', function() {
     it('works properly', function() {
       const provider = {
         grammarScopes: [],
         getDeclarations() {},
       }
-      expect(providersRegistry.hasProvider(provider)).toBe(false)
+      expect(providersRegistry.providers.has(provider)).toBe(false)
       providersRegistry.addProvider(provider)
-      expect(providersRegistry.hasProvider(provider)).toBe(true)
+      expect(providersRegistry.providers.has(provider)).toBe(true)
     })
   })
   describe('deleteProvider', function() {
@@ -44,11 +47,11 @@ describe('ProvidersRegistry', function() {
         grammarScopes: [],
         getDeclarations() {},
       }
-      expect(providersRegistry.hasProvider(provider)).toBe(false)
+      expect(providersRegistry.providers.has(provider)).toBe(false)
       providersRegistry.addProvider(provider)
-      expect(providersRegistry.hasProvider(provider)).toBe(true)
+      expect(providersRegistry.providers.has(provider)).toBe(true)
       providersRegistry.deleteProvider(provider)
-      expect(providersRegistry.hasProvider(provider)).toBe(false)
+      expect(providersRegistry.providers.has(provider)).toBe(false)
     })
   })
   describe('trigger', function() {
@@ -73,76 +76,6 @@ describe('ProvidersRegistry', function() {
         })
       })
     })
-    it('ignores previous result from executed twice instantly', function() {
-      let count = 0
-      const intentionFirst = {
-        range: [[0, 1], [1, Infinity]],
-        source: {
-          filePath: '',
-        },
-      }
-      const intentionSecond = {
-        range: [[0, 1], [1, Infinity]],
-        source: {
-          filePath: '',
-        },
-      }
-      providersRegistry.addProvider({
-        grammarScopes: ['*'],
-        getDeclarations() {
-          if (++count === 1) {
-            return [intentionFirst]
-          }
-          return [intentionSecond]
-        },
-      })
-      const promiseFirst = providersRegistry.trigger(providerParams)
-      const promiseSecond = providersRegistry.trigger(providerParams)
-
-      waitsForPromise(function() {
-        return promiseFirst.then(function(results) {
-          expect(results).toBe(null)
-        })
-      })
-      waitsForPromise(function() {
-        return promiseSecond.then(function(results) {
-          expect(results).not.toBe(null)
-          expect(results instanceof Array).toBe(true)
-          expect(results[0]).toBe(intentionSecond)
-        })
-      })
-    })
-    it('does not enable it if providers return no results, including non-array ones', function() {
-      providersRegistry.addProvider({
-        grammarScopes: ['*'],
-        getDeclarations() {
-          return []
-        },
-      })
-      providersRegistry.addProvider({
-        grammarScopes: ['*'],
-        getDeclarations() {
-          return null
-        },
-      })
-      providersRegistry.addProvider({
-        grammarScopes: ['*'],
-        getDeclarations() {
-          return false
-        },
-      })
-      providersRegistry.addProvider({
-        grammarScopes: ['*'],
-        getDeclarations() {
-          return 50
-        },
-      })
-      waitsForPromise(function() {
-        return providersRegistry.trigger(providerParams).then(function(results) {
-          expect(results).toBe(null)
-        })
-      })
-    })
     it('emits an error if provider throws an error', function() {
       providersRegistry.addProvider({
         grammarScopes: ['*'],
@@ -152,9 +85,7 @@ describe('ProvidersRegistry', function() {
       })
       waitsForPromise(function() {
         return providersRegistry.trigger(providerParams).then(function() {
-          expect(false).toBe(true)
-        }, function(e) {
-          expect(e.message).toBe('test from provider')
+          expect(atom.notifications.getNotifications().length).toBe(1)
         })
       })
     })
@@ -167,9 +98,7 @@ describe('ProvidersRegistry', function() {
       })
       waitsForPromise(function() {
         return providersRegistry.trigger(providerParams).then(function() {
-          expect(false).toBe(true)
-        }, function(e) {
-          expect(e instanceof Error).toBe(true)
+          expect(atom.notifications.getNotifications().length).toBe(1)
         })
       })
     })
