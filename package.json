@@ -1,6 +1,6 @@
 {
   "name": "declarations",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "A base package that lets other packages provide declaration highlights",
   "main": "lib/index.js",
   "scripts": {
