@@ -42,5 +42,8 @@
   },
   "dependencies": {
     "sb-event-kit": "^1.1.2"
+  },
+  "devDependencies": {
+    "eslint-config-steelbrain": "^1.0.4"
   }
 }
