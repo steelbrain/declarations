@@ -1,159 +1,158 @@
 'use babel'
 
-import {validateDeclarations, validateProvider} from '../lib/validate'
+import { processDeclarations, processProvider } from '../lib/process'
 
-describe('Validate', function() {
-
-  describe('validateDeclarations', function() {
+describe('Process', function() {
+  describe('processDeclarations', function() {
     it('works well with valid ones', function() {
       expect(function() {
-        validateDeclarations([{
+        processDeclarations([{
           range: [[0, 0], [0, 1]],
           source: {
             filePath: '/etc/passwd',
-            position: [0, 1]
-          }
+            position: [0, 1],
+          },
         }])
       }).not.toThrow()
     })
     it('cries if range is invalid', function() {
       expect(function() {
-        validateDeclarations([{
+        processDeclarations([{
           range: false,
           source: {
             filePath: '/etc/passwd',
-            position: [0, 1]
-          }
+            position: [0, 1],
+          },
         }])
       }).toThrow()
       expect(function() {
-        validateDeclarations([{
+        processDeclarations([{
           range: null,
           source: {
             filePath: '/etc/passwd',
-            position: [0, 1]
-          }
+            position: [0, 1],
+          },
         }])
       }).toThrow()
       expect(function() {
-        validateDeclarations([{
+        processDeclarations([{
           range: true,
           source: {
             filePath: '/etc/passwd',
-            position: [0, 1]
-          }
+            position: [0, 1],
+          },
         }])
       }).toThrow()
       expect(function() {
-        validateDeclarations([{
+        processDeclarations([{
           range: 'asd',
           source: {
             filePath: '/etc/passwd',
-            position: [0, 1]
-          }
+            position: [0, 1],
+          },
         }])
       }).toThrow()
     })
     it('cries if source is invalid', function() {
       expect(function() {
-        validateDeclarations([{
+        processDeclarations([{
           range: [[0, 0], [0, 1]],
-          source: null
+          source: null,
         }])
       }).toThrow()
       expect(function() {
-        validateDeclarations([{
+        processDeclarations([{
           range: [[0, 0], [0, 1]],
-          source: false
+          source: false,
         }])
       }).toThrow()
       expect(function() {
-        validateDeclarations([{
+        processDeclarations([{
           range: [[0, 0], [0, 1]],
-          source: true
+          source: true,
         }])
       }).toThrow()
       expect(function() {
-        validateDeclarations([{
+        processDeclarations([{
           range: [[0, 0], [0, 1]],
-          source: 'asd'
+          source: 'asd',
         }])
       }).toThrow()
     })
     it('cries if source.filePath is invalid', function() {
       expect(function() {
-        validateDeclarations([{
+        processDeclarations([{
           range: [[0, 0], [0, 1]],
           source: {
             filePath: false,
-            position: [0, 1]
-          }
+            position: [0, 1],
+          },
         }])
       }).toThrow()
       expect(function() {
-        validateDeclarations([{
+        processDeclarations([{
           range: [[0, 0], [0, 1]],
           source: {
             filePath: null,
-            position: [0, 1]
-          }
+            position: [0, 1],
+          },
         }])
       }).toThrow()
       expect(function() {
-        validateDeclarations([{
+        processDeclarations([{
           range: [[0, 0], [0, 1]],
           source: {
             filePath: true,
-            position: [0, 1]
-          }
+            position: [0, 1],
+          },
         }])
       }).toThrow()
       expect(function() {
-        validateDeclarations([{
+        processDeclarations([{
           range: [[0, 0], [0, 1]],
           source: {
             filePath: {},
-            position: [0, 1]
-          }
+            position: [0, 1],
+          },
         }])
       }).toThrow()
     })
     it('ignores if theres no source.position', function() {
       expect(function() {
-        validateDeclarations([{
+        processDeclarations([{
           range: [[0, 0], [0, 1]],
           source: {
             filePath: '/etc/passwd',
-            position: null
-          }
+            position: null,
+          },
         }])
       }).not.toThrow()
     })
     it('cries if source.position is provided an invalid', function() {
       expect(function() {
-        validateDeclarations([{
+        processDeclarations([{
           range: [[0, 0], [0, 1]],
           source: {
             filePath: '/etc/passwd',
-            position: true
-          }
+            position: true,
+          },
         }])
       }).toThrow()
       expect(function() {
-        validateDeclarations([{
+        processDeclarations([{
           range: [[0, 0], [0, 1]],
           source: {
             filePath: '/etc/passwd',
-            position: 'asd'
-          }
+            position: 'asd',
+          },
         }])
       }).toThrow()
     })
     it('accepts callback in source', function() {
       expect(function() {
-        validateDeclarations([{
+        processDeclarations([{
           range: [[0, 0], [0, 1]],
-          source: function() {}
+          source() {},
         }])
       }).not.toThrow()
     })
@@ -162,70 +161,69 @@ describe('Validate', function() {
   describe('validateProvider', function() {
     it('works with valid providers', function() {
       expect(function() {
-        validateProvider({
+        processProvider({
           grammarScopes: ['*'],
-          getDeclarations() {}
+          getDeclarations() { },
         })
       }).not.toThrow()
     })
     it('cries if grammarScopes is invalid', function() {
       expect(function() {
-        validateProvider({
+        processProvider({
           grammarScopes: null,
-          getDeclarations() {}
+          getDeclarations() {},
         })
       }).toThrow()
       expect(function() {
-        validateProvider({
+        processProvider({
           grammarScopes: true,
-          getDeclarations() {}
+          getDeclarations() {},
         })
       }).toThrow()
       expect(function() {
-        validateProvider({
+        processProvider({
           grammarScopes: 'asd',
-          getDeclarations() {}
+          getDeclarations() {},
         })
       }).toThrow()
       expect(function() {
-        validateProvider({
+        processProvider({
           grammarScopes: {},
-          getDeclarations() {}
+          getDeclarations() {},
         })
       }).toThrow()
     })
     it('cries if getDeclarations is invalid', function() {
       expect(function() {
-        validateProvider({
+        processProvider({
           grammarScopes: ['*'],
-          getDeclarations: true
+          getDeclarations: true,
         })
       }).toThrow()
       expect(function() {
-        validateProvider({
+        processProvider({
           grammarScopes: ['*'],
-          getDeclarations: false
+          getDeclarations: false,
         })
       }).toThrow()
       expect(function() {
-        validateProvider({
+        processProvider({
           grammarScopes: ['*'],
-          getDeclarations: null
+          getDeclarations: null,
         })
       }).toThrow()
       expect(function() {
-        validateProvider({
+        processProvider({
           grammarScopes: ['*'],
-          getDeclarations: 'asd'
+          getDeclarations: 'asd',
         })
       }).toThrow()
       expect(function() {
-        validateProvider({
+        processProvider({
           grammarScopes: ['*'],
-          getDeclarations: {}
+          getDeclarations: {},
         })
       }).toThrow()
     })
   })
-
 })

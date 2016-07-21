@@ -44,6 +44,7 @@
     "sb-event-kit": "^2.0.0"
   },
   "devDependencies": {
-    "eslint-config-steelbrain": "^1.0.4"
+    "eslint-config-steelbrain": "^1.0.4",
+    "jasmine-fix": "^1.0.0"
   }
 }

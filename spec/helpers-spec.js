@@ -1,9 +1,8 @@
 'use babel'
 
-import {visitSource} from '../lib/helpers'
+import { visitSource } from '../lib/helpers'
 
 describe('Helpers', function() {
-
   beforeEach(function() {
     atom.workspace.destroyActivePaneItem()
   })
@@ -12,7 +11,7 @@ describe('Helpers', function() {
     it('opens the file and sets cursor position', function() {
       const filePath = __filename
       waitsForPromise(function() {
-        return visitSource({source: {filePath, position: [0, 1]}}).then(function() {
+        return visitSource({ source: { filePath, position: [0, 1] } }).then(function() {
           const activeEditor = atom.workspace.getActiveTextEditor()
           expect(activeEditor.getPath()).toBe(filePath)
           expect(activeEditor.getCursorBufferPosition()).toEqual([0, 1])
@@ -23,7 +22,7 @@ describe('Helpers', function() {
     it('opens the file and does not set cursor position if its not provided', function() {
       const filePath = __filename
       waitsForPromise(function() {
-        return visitSource({source: {filePath, position: [0, 0]}}).then(function() {
+        return visitSource({ source: { filePath, position: [0, 0] } }).then(function() {
           const activeEditor = atom.workspace.getActiveTextEditor()
           expect(activeEditor.getPath()).toBe(filePath)
           expect(activeEditor.getCursorBufferPosition()).toEqual([0, 0])
@@ -34,11 +33,13 @@ describe('Helpers', function() {
     it('works with promised sources', function() {
       const filePath = __filename
       waitsForPromise(function() {
-        return visitSource({source: function() {
-          return new Promise(function(resolve) {
-            resolve({filePath, position: [0, 1]})
-          })
-        }}).then(function() {
+        return visitSource({
+          source() {
+            return new Promise(function(resolve) {
+              resolve({ filePath, position: [0, 1] })
+            })
+          },
+        }).then(function() {
           const activeEditor = atom.workspace.getActiveTextEditor()
           expect(activeEditor.getPath()).toBe(filePath)
           expect(activeEditor.getCursorBufferPosition()).toEqual([0, 1])
@@ -46,5 +47,4 @@ describe('Helpers', function() {
       })
     })
   })
-
 })

@@ -1,6 +1,7 @@
 'use babel'
 
-import {ProvidersRegistry} from '../lib/providers-registry'
+import { Range } from 'atom'
+import ProvidersRegistry from '../lib/providers-registry'
 
 describe('ProvidersRegistry', function() {
   let editor
@@ -17,7 +18,7 @@ describe('ProvidersRegistry', function() {
     waitsForPromise(function() {
       return atom.workspace.open(__filename).then(function() {
         editor = atom.workspace.getActiveTextEditor()
-        providerParams = {textEditor: editor, visibleRange: [[0, 0], [1, 0]]}
+        providerParams = { textEditor: editor, visibleRange: Range.fromObject([[0, 0], [1, 0]]) }
       })
     })
   })
@@ -26,7 +27,7 @@ describe('ProvidersRegistry', function() {
     it('works properly', function() {
       const provider = {
         grammarScopes: [],
-        getDeclarations: function() {}
+        getDeclarations() {},
       }
       expect(providersRegistry.hasProvider(provider)).toBe(false)
       providersRegistry.addProvider(provider)
@@ -41,7 +42,7 @@ describe('ProvidersRegistry', function() {
       providersRegistry.deleteProvider(50)
       const provider = {
         grammarScopes: [],
-        getDeclarations: function() {}
+        getDeclarations() {},
       }
       expect(providersRegistry.hasProvider(provider)).toBe(false)
       providersRegistry.addProvider(provider)
@@ -52,17 +53,17 @@ describe('ProvidersRegistry', function() {
   })
   describe('trigger', function() {
     it('works properly', function() {
-      const intention  = {
+      const intention = {
         range: [[0, 1], [1, Infinity]],
         source: {
-          filePath: ''
-        }
+          filePath: '',
+        },
       }
       providersRegistry.addProvider({
         grammarScopes: ['*'],
-        getDeclarations: function() {
+        getDeclarations() {
           return [intention]
-        }
+        },
       })
       waitsForPromise(function() {
         return providersRegistry.trigger(providerParams).then(function(results) {
@@ -74,25 +75,26 @@ describe('ProvidersRegistry', function() {
     })
     it('ignores previous result from executed twice instantly', function() {
       let count = 0
-      const intentionFirst  = {
+      const intentionFirst = {
         range: [[0, 1], [1, Infinity]],
         source: {
-          filePath: ''
-        }
+          filePath: '',
+        },
       }
-      const intentionSecond  = {
+      const intentionSecond = {
         range: [[0, 1], [1, Infinity]],
         source: {
-          filePath: ''
-        }
+          filePath: '',
+        },
       }
       providersRegistry.addProvider({
         grammarScopes: ['*'],
-        getDeclarations: function() {
+        getDeclarations() {
           if (++count === 1) {
             return [intentionFirst]
-          } else return [intentionSecond]
-        }
+          }
+          return [intentionSecond]
+        },
       })
       const promiseFirst = providersRegistry.trigger(providerParams)
       const promiseSecond = providersRegistry.trigger(providerParams)
@@ -113,27 +115,27 @@ describe('ProvidersRegistry', function() {
     it('does not enable it if providers return no results, including non-array ones', function() {
       providersRegistry.addProvider({
         grammarScopes: ['*'],
-        getDeclarations: function() {
+        getDeclarations() {
           return []
-        }
+        },
       })
       providersRegistry.addProvider({
         grammarScopes: ['*'],
-        getDeclarations: function() {
+        getDeclarations() {
           return null
-        }
+        },
       })
       providersRegistry.addProvider({
         grammarScopes: ['*'],
-        getDeclarations: function() {
+        getDeclarations() {
           return false
-        }
+        },
       })
       providersRegistry.addProvider({
         grammarScopes: ['*'],
-        getDeclarations: function() {
+        getDeclarations() {
           return 50
-        }
+        },
       })
       waitsForPromise(function() {
         return providersRegistry.trigger(providerParams).then(function(results) {
@@ -144,9 +146,9 @@ describe('ProvidersRegistry', function() {
     it('emits an error if provider throws an error', function() {
       providersRegistry.addProvider({
         grammarScopes: ['*'],
-        getDeclarations: function() {
+        getDeclarations() {
           throw new Error('test from provider')
-        }
+        },
       })
       waitsForPromise(function() {
         return providersRegistry.trigger(providerParams).then(function() {
@@ -159,9 +161,9 @@ describe('ProvidersRegistry', function() {
     it('validates suggestions properly', function() {
       providersRegistry.addProvider({
         grammarScopes: ['*'],
-        getDeclarations: function() {
+        getDeclarations() {
           return [{}]
-        }
+        },
       })
       waitsForPromise(function() {
         return providersRegistry.trigger(providerParams).then(function() {
@@ -176,15 +178,15 @@ describe('ProvidersRegistry', function() {
       let jsCalled = false
       providersRegistry.addProvider({
         grammarScopes: ['source.js'],
-        getDeclarations: function() {
+        getDeclarations() {
           jsCalled = true
-        }
+        },
       })
       providersRegistry.addProvider({
         grammarScopes: ['source.coffee'],
-        getDeclarations: function() {
+        getDeclarations() {
           coffeeCalled = true
-        }
+        },
       })
       waitsForPromise(function() {
         return providersRegistry.trigger(providerParams).then(function() {
