@@ -4,7 +4,8 @@
   "description": "A base package that lets other packages provide declaration highlights",
   "main": "lib/index.js",
   "scripts": {
-    "test": "apm test"
+    "test": "apm test",
+    "lint": "eslint ."
   },
   "repository": {
     "type": "git",
@@ -42,5 +43,9 @@
   },
   "dependencies": {
     "sb-event-kit": "^2.0.0"
+  },
+  "devDependencies": {
+    "eslint-config-steelbrain": "^1.0.4",
+    "jasmine-fix": "^1.0.0"
   }
 }
