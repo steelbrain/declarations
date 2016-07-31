@@ -165,6 +165,18 @@ describe('Process', function() {
         }])
       }).toBe(true)
     })
+    it('normalizes contents of declarations', function() {
+      const declaration = {
+        range: [[0, 0], [1, 1]],
+        source: {
+          filePath: '/etc/passwd',
+          position: [0, 1],
+        },
+      }
+      processDeclarations([declaration])
+      expect(declaration.range.constructor.name).toBe('Range')
+      expect(declaration.source.position.constructor.name).toBe('Point')
+    })
   })
 
   describe('validateProvider', function() {
