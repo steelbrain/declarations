@@ -1,3 +1,7 @@
+## Upcoming
+
+- Fix for providers that return non-array response
+
 ## 1.1.2
 
 - Fix a bug where invalid type would be filled for `declaration.source.position` if it's an Array
