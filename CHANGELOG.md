@@ -1,4 +1,4 @@
-## Upcoming
+## 1.1.3
 
 - Fix for providers that return non-array response
 
