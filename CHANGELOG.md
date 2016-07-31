@@ -1,3 +1,7 @@
+## 1.1.2
+
+- Fix a bug where invalid type would be filled for `declaration.source.position` if it's an Array
+
 ## 1.1.1
 
 - Fix a minor typo
