@@ -1,5 +1,7 @@
 # Declarations
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/steelbrain/declarations.svg)](https://greenkeeper.io/)
+
 Declarations is a base Atom package that allows you to jump around in your files.
 
 It has an easy to use [API][API] which binds on the [Intentions][intentions] package, allowing providers to show their suggestion as both highlights and in list.
