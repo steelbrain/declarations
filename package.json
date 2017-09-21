@@ -46,6 +46,6 @@
   },
   "devDependencies": {
     "eslint-config-steelbrain": "^3.0.0",
-    "jasmine-fix": "^1.0.0"
+    "jasmine-fix": "^1.3.1"
   }
 }
